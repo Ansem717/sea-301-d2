@@ -11,17 +11,18 @@
     <link rel="stylesheet" href="styles/modules.css">
 
     <script id="address-template" type="text/x-handlebars-template">
-      <article class="template template" data-category="{{category}}">
+      <article data-author="{{author}}" data-category="{{category}}">
         <header>
-          <h1>{{Title}}</h1>
+          <h1>{{title}}</h1>
           <div class="byline">
-            By <address><a href="{{authorUrl}}">{{Author Name}}</a></address>
-            published <time pubdate datetime="2000-01-01">{{Publish Time}}</time>
+            By <address><a href="{{authorUrl}}">{{author}}</a></address>
+            published <time pubdate datetime="2000-01-01">{{publishedOn}}</time>
           </div>
         </header>
-        <section class="article-body">{{body}}</section>
+        <section class="article-body">{{{body}}}</section>
         <a href="#" class="read-on">Read on &rarr;</a>
       </article>
+    </script>
     <!--
       DONE: Add a script tag to hold the Handlebars template.
         - Be sure to give it a meaningful id attribute.
@@ -29,7 +30,6 @@
         - Insert placeholder keys.
         - If your object doesn't have values you need yet, you can add those properties in the model.
     -->
-    </script>
   </head>
   <body>
     <header class="site-header clearfix">
@@ -65,6 +65,7 @@
             </li>
           </ul>
         </div>
+        <div class="content-placeholder"></div>
       </section>
       <section id="about" class="tab-content">
         <header>
