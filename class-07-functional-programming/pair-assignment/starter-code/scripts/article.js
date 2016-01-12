@@ -1,6 +1,7 @@
 // TODO: Wrap the entire contents of this file in an IIFE.
 // Pass in to the IIFE a module, upon which objects can be attached for later access.
-function Article (opts) {
+(function(module) {
+  function Article (opts) {
   this.author = opts.author;
   this.authorUrl = opts.authorUrl;
   this.title = opts.title;
@@ -40,27 +41,40 @@ Article.loadAll = function(rawData) {
 // and process it, then hand off control to the View.
 // TODO: Refactor this function, so it accepts an argument of a callback function (likely a view function)
 // to execute once the loading of articles is done.
-Article.fetchAll = function() {
+Article.fetchAll = function(next) {
   if (localStorage.rawData) {
     Article.loadAll(JSON.parse(localStorage.rawData));
-    articleView.initIndexPage();
+    if(next==="admin") {
+       articleView.initAdminPage();
+     } else {
+       articleView.initIndexPage();
+     }
+     //console.log(next)
   } else {
     $.getJSON('/data/hackerIpsum.json', function(rawData) {
       Article.loadAll(rawData);
       localStorage.rawData = JSON.stringify(rawData); // Cache the json, so we don't need to request it next time.
-      articleView.initIndexPage();
-    });
+    }).done( function(){
+      if(next==="admin") {
+         articleView.initAdminPage();
+       } else {
+         articleView.initIndexPage();
+       }
+       //console.log(next)
+    }
+    );
   }
 };
 
 // TODO: Chain together a `map` and a `reduce` call to get a rough count of all words in all articles.
 Article.numWordsAll = function() {
   return Article.all.map(function(article) {
-    return // Get the total number of words in this article
+    var words = article.body.split(' ');
+    return words.length; // Get the total number of words in this article
   })
   .reduce(function(a, b) {
-    return // Sum up all the values in the collection
-  })
+    return (a+b); // Sum up all the values in the collection
+  });
 };
 
 // TODO: Chain together a `map` and a `reduce` call to produce an array of unique author names.
@@ -73,7 +87,11 @@ Article.numWordsByAuthor = function() {
   // the author's name, and one for the total number of words across all articles written by the specified author.
   return Article.allAuthors().map(function(author) {
     return {
+
       // someKey: someValOrFunctionCall().map(...).reduce(...), ...
     }
   })
 };
+
+module.Article = Article;
+})(window);

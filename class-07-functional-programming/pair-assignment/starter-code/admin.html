@@ -11,9 +11,11 @@
     <link rel="stylesheet" href="/styles/modules.css">
     </head>
     <!-- TODO: Setup a template for each row of the Author Stats section of this page: -->
+    <!-- The below code was written for us... -->
     <script id="author-template" type="text/x-handlebars-template">
       <li><strong>{{name}}</strong>: {{numWords}} words written</li>
     </script>
+    <!--Done?-->
   <body>
     <header class="site-header clearfix">
       <section class="heading-group-h1 pull-left">
@@ -54,6 +56,7 @@
     <script>
       // TODO: After we fetch and load all the articles, what view function do we want to run next?
       // Let's pass in a callback function, to determine what happens AFTER all articles are loaded.
+      Article.fetchAll("admin");
     </script>
   </body>
 </html>
