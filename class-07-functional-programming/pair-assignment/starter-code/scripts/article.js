@@ -1,4 +1,4 @@
-// TODO: Wrap the entire contents of this file in an IIFE.
+// DONE: Wrap the entire contents of this file in an IIFE.
 // Pass in to the IIFE a module, upon which objects can be attached for later access.
 (function(module) {
   function Article (opts) {
@@ -39,7 +39,7 @@ Article.loadAll = function(rawData) {
 
 // This function will retrieve the data from either a local or remote source,
 // and process it, then hand off control to the View.
-// TODO: Refactor this function, so it accepts an argument of a callback function (likely a view function)
+// DONE: Refactor this function, so it accepts an argument of a callback function (likely a view function)
 // to execute once the loading of articles is done.
 Article.fetchAll = function(next) {
   if (localStorage.rawData) {
@@ -66,7 +66,7 @@ Article.fetchAll = function(next) {
   }
 };
 
-// TODO: Chain together a `map` and a `reduce` call to get a rough count of all words in all articles.
+// DONE: Chain together a `map` and a `reduce` call to get a rough count of all words in all articles.
 Article.numWordsAll = function() {
   return Article.all.map(function(article) {
     var words = article.body.split(' ');
@@ -77,20 +77,41 @@ Article.numWordsAll = function() {
   });
 };
 
-// TODO: Chain together a `map` and a `reduce` call to produce an array of unique author names.
+// DONE: Chain together a `map` and a `reduce` call to produce an array of unique author names.
 Article.allAuthors = function() {
-  return // Don't forget to read the docs on map and reduce!
+  return Article.all.map(function(article) {
+    return article.author;
+  })
+  .reduce(function(prev, cur){
+    if(prev.indexOf(cur)<0) {
+      prev.push(cur);
+    }
+    return prev;
+  }, []);
+  // return Article.all.map(f(article)).reduce(f(pre, cur), []);
 };
 
 Article.numWordsByAuthor = function() {
-  // TODO: Transform each author string into an object with 2 properties: One for
+  // DONE: Transform each author string into an object with 2 properties: One for
   // the author's name, and one for the total number of words across all articles written by the specified author.
   return Article.allAuthors().map(function(author) {
     return {
-
+      name: author,
+      numWords:
+        Article.all
+        .filter(function(article){
+          return article.author === author;
+        })
+        .map(function(article){
+          var words = article.body.split(' ');
+          return words.length;
+        })
+        .reduce(function(a,b){
+          return (a+b);
+        });
       // someKey: someValOrFunctionCall().map(...).reduce(...), ...
     }
-  })
+  });
 };
 
 module.Article = Article;
