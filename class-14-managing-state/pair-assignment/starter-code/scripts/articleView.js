@@ -38,12 +38,13 @@
     });
   };
 
-  // TODO: Combine both filter functions to a single event handler,
+  // DONE: Combine both filter functions to a single event handler,
   // which simply redirects to a url like: /category/skateboarding or /author/Kevin+Bacon
-  articleView.handleFilters = function() {
-    $('#filters').one('change', 'select', function() {
-      resource = this.id.replace('-filter', '');
+  articleView.handleFilters = function() { // Creating handleFilters Method
+    $('#filters').one('change', 'select', function() { // Apply a event handler to only occur once during the entire document. It will apply once for both change and select.
+      resource = this.id.replace('-filter', ''); // Set the variable resource to the id without the suffix of '-filter'
       page('/' + resource + '/' + $(this).val().replace(/\W+/g, '+')); // Replace any/all whitespace with a +
+      //Above is the actual routing call itself.
     });
   };
   // articleView.handleAuthorFilter = function() {
@@ -72,7 +73,7 @@
   //   });
   // };
 
-  // TODO: Remove the setTeasers method, and replace with a plain ole link in the article template.
+  // DONE: Remove the setTeasers method, and replace with a plain ole link in the article template.
   // articleView.setTeasers = function() {
   //   $('.article-body *:nth-of-type(n+2)').hide();
   //
@@ -119,18 +120,18 @@
     $('#article-json').val(JSON.stringify(article) + ',');
   };
 
-  // TODO: Refactor this method so it works with any number of articles.
+  // DONE: Refactor this method so it works with any number of articles.
   // Also, it should be idempotent, so it can be run multiple times with identical results.
-  articleView.index = function(articles) {
-    $('#articles').show().siblings().hide();
+  articleView.index = function(articles) { // 1) Create method named index
+    $('#articles').show().siblings().hide(); // 2) Find element with id 'articles,' show it, and find it's siblings, and hide them.
 
-    $('#articles article').remove();
-    articles.forEach(function(a) {
-      $('#articles').append(render(a));
+    $('#articles article').remove(); // find all <article> elements within the element whose id is 'article' and remove them from the DOM.
+    articles.forEach(function(a) {      // For each item in the array that was passed as a parameter...
+      $('#articles').append(render(a)); // ... append all rendered items.
     });
 
     articleView.populateFilters();
-    // TODO: Call the new unified filter handler function
+    // DONE: Call the new unified filter handler function
     articleView.handleFilters();
     // articleView.handleCategoryFilter();
     // articleView.handleAuthorFilter();
