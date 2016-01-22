@@ -4,7 +4,11 @@
   repos.all = [];
 
   repos.requestRepos = function(callback) {
-    // TODO: How would you like to fetch your repos? Don't forget to call the callback.
+    // DONE: How would you like to fetch your repos? Don't forget to call the callback.
+    $.get('/github/users/Ansem717/repos?sort=updated')
+    .done(function(data, message, xhr){
+      repos.all = data;
+    }).done(callback);
 
   };
 
